@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CtrlConverter</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1>CtrlConverter</h1>
+    <p class="subtitle">Compressor e conversor de imagens em massa (processa no seu navegador)</p>
+
+    <div id="drop" class="drop" role="button" tabindex="0" aria-label="Adicionar imagens">
+      <strong>Arraste e solte</strong> suas imagens aqui<br/>
+      <span class="muted">ou clique para selecionar</span>
+      <div class="btnRow">
+        <label class="btn" for="file">Selecionar arquivos</label>
+        <button id="clear" class="btn ghost" type="button">Limpar</button>
+      </div>
+      <input id="file" type="file" multiple accept="image/*" hidden />
+    </div>
+
+    <div class="panel">
+      <div class="grid">
+        <div>
+          <label>Formato de saída</label>
+          <select id="format">
+            <option value="webp">WebP</option>
+            <option value="jpeg">JPEG</option>
+            <option value="png">PNG</option>
+            <option value="avif" disabled>AVIF (em breve)</option>
+          </select>
+          <small class="hint">Dica: WebP é ótimo pra web e e-commerce.</small>
+        </div>
+
+        <div>
+          <label>Qualidade (1–100)</label>
+          <input id="quality" type="number" value="80" min="1" max="100"/>
+          <small class="hint">Só afeta WebP/JPEG</small>
+        </div>
+
+        <div>
+          <label>Largura máxima (opcional)</label>
+          <input id="width" type="number" placeholder="Ex: 1200"/>
+          <small class="hint">Mantém proporção</small>
+        </div>
+
+        <div>
+          <label>Nome do ZIP</label>
+          <input id="zipname" type="text" value="ctrlconverter"/>
+          <small class="hint">Baixa tudo num arquivo só</small>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="run" class="btn primary" type="button">Processar imagens</button>
+      </div>
+
+      <div class="progress">
+        <div id="bar"></div>
+      </div>
+      <div id="status" class="status"></div>
+    </div>
+
+    <div class="list">
+      <h2>Fila</h2>
+      <ul id="files" class="files"></ul>
+    </div>
+  </div>
+
+  <!-- JSZip via CDN (sem build) -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
