@@ -80,6 +80,11 @@ input, select {
   outline: none;
 }
 
+input[readonly] {
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
 .actions { margin-top: 14px; display: flex; justify-content: flex-end; }
 
 .btn {
