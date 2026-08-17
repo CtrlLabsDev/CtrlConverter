@@ -9,9 +9,10 @@ const bar = document.getElementById("bar");
 const statusEl = document.getElementById("status");
 
 const formatEl = document.getElementById("format");
-const qualityEl = document.getElementById("quality");
 const widthEl = document.getElementById("width");
 const zipNameEl = document.getElementById("zipname");
+
+const OUTPUT_QUALITY = 1;
 
 let queue = []; // File[]
 
@@ -90,11 +91,11 @@ function resizeToCanvas(bitmap, maxWidth) {
   return canvas;
 }
 
-function canvasToBlob(canvas, mime, quality) {
+function canvasToBlob(canvas, mime) {
   return new Promise((resolve) => {
     // qualidade só vale pra webp/jpeg
     const q = (mime === "image/webp" || mime === "image/jpeg")
-      ? Math.max(0.01, Math.min(1, (quality || 80) / 100))
+      ? OUTPUT_QUALITY
       : undefined;
 
     canvas.toBlob((blob) => resolve(blob), mime, q);
@@ -133,7 +134,6 @@ runBtn.addEventListener("click", async () => {
   clearBtn.disabled = true;
 
   const fmt = formatEl.value;
-  const quality = Number(qualityEl.value || 80);
   const maxW = Number(widthEl.value || 0);
   const zipName = (zipNameEl.value || "ctrlconverter").trim();
 
@@ -158,7 +158,7 @@ runBtn.addEventListener("click", async () => {
       const bitmap = await fileToBitmap(file);
       const canvas = resizeToCanvas(bitmap, maxW);
 
-      const outBlob = await canvasToBlob(canvas, mime, quality);
+      const outBlob = await canvasToBlob(canvas, mime);
 
       if (!outBlob) {
         throw new Error(`Falha ao gerar blob para ${file.name}`);

@@ -35,14 +35,14 @@
         </div>
 
         <div>
-          <label>Qualidade (1–100)</label>
-          <input id="quality" type="number" value="80" min="1" max="100"/>
-          <small class="hint">Só afeta WebP/JPEG</small>
+          <label>Qualidade</label>
+          <input id="quality" type="number" value="100" min="100" max="100" readonly aria-readonly="true"/>
+          <small class="hint">Fixa em 100 para WebP/JPEG</small>
         </div>
 
         <div>
           <label>Largura máxima (opcional)</label>
-          <input id="width" type="number" placeholder="Ex: 1200"/>
+          <input id="width" type="number" value="2000" min="1" placeholder="Ex: 2000"/>
           <small class="hint">Mantém proporção</small>
         </div>
 
