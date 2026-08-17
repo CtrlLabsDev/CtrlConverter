@@ -9,7 +9,6 @@ const bar = document.getElementById("bar");
 const statusEl = document.getElementById("status");
 
 const formatEl = document.getElementById("format");
-const widthEl = document.getElementById("width");
 const zipNameEl = document.getElementById("zipname");
 
 const OUTPUT_QUALITY = 1;
@@ -67,26 +66,15 @@ async function fileToBitmap(file) {
   return await createImageBitmap(file);
 }
 
-function resizeToCanvas(bitmap, maxWidth) {
-  const srcW = bitmap.width;
-  const srcH = bitmap.height;
-
-  let outW = srcW;
-  let outH = srcH;
-
-  if (maxWidth && maxWidth > 0 && srcW > maxWidth) {
-    outW = maxWidth;
-    outH = Math.round((srcH * outW) / srcW);
-  }
-
+function bitmapToCanvas(bitmap) {
   const canvas = document.createElement("canvas");
-  canvas.width = outW;
-  canvas.height = outH;
+  canvas.width = bitmap.width;
+  canvas.height = bitmap.height;
 
   const ctx = canvas.getContext("2d", { alpha: true });
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
-  ctx.drawImage(bitmap, 0, 0, outW, outH);
+  ctx.drawImage(bitmap, 0, 0);
 
   return canvas;
 }
@@ -134,7 +122,6 @@ runBtn.addEventListener("click", async () => {
   clearBtn.disabled = true;
 
   const fmt = formatEl.value;
-  const maxW = Number(widthEl.value || 0);
   const zipName = (zipNameEl.value || "ctrlconverter").trim();
 
   // Checagem de suporte do browser ao mime escolhido
@@ -156,7 +143,7 @@ runBtn.addEventListener("click", async () => {
       setProgress(Math.round((i / queue.length) * 100), `Processando ${i + 1}/${queue.length}: ${file.name}`);
 
       const bitmap = await fileToBitmap(file);
-      const canvas = resizeToCanvas(bitmap, maxW);
+      const canvas = bitmapToCanvas(bitmap);
 
       const outBlob = await canvasToBlob(canvas, mime);
 
